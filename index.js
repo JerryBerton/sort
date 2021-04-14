@@ -86,34 +86,45 @@ function mergeSort (nums) {
 
 // 5、快速排序（分治思想）
 function quickSort (arr, left = 0, right = arr.length - 1) {
-  if (arr.length > 1) {
-    let baseIndex = left;
-    let leftIndex = left;
-    let rightIndex = right;
-    let baseValue = arr[Math.floor(left + (right - left) / 2)];
-    while (leftIndex <= rightIndex) {
-      while (arr[leftIndex] < baseValue) {
-        leftIndex++
-      }
-      while (arr[rightIndex] > baseValue) {
-        rightIndex--;
-      }
-      if (leftIndex <= rightIndex) {
-        [arr[leftIndex], arr[rightIndex]] = [arr[rightIndex], arr[leftIndex]]
-        leftIndex++;
-        rightIndex--;
-      }
-    }
-    baseIndex = leftIndex;
-    if(left < baseIndex - 1) {
-      // 左子数组以 lineIndex-1 为右边界
-      quickSort(arr, left, baseIndex-1)
-    }
-    // 如果右边子数组的长度不小于1，则递归快排这个子数组
-    if(baseIndex < right) {
-      // 右子数组以 lineIndex 为左边界
-      quickSort(arr, baseIndex, right)
-    }
+  if (arr.length <= 1) {
+    return arr
+  }
+  // lineIndex表示下一次划分左右子数组的索引位
+  const lineIndex = partintion(arr, left, right)
+  // 如果左边子数组的长度不小于1，则递归排序这个子数组
+  if (left < lineIndex - 1) {
+    quickSort(arr, left, lineIndex - 1)
+  }
+  // 如果右边子数组的长度不小于1，则递归快拍这个字数组
+  if (lineIndex < right) {
+    quickSort(arr, lineIndex, right)
   }
   return arr
+}
+
+
+function partintion(arr, left, right) {
+  // 基准值
+  let pivotValue = arr[Math.floor(left + (right - left) / 2)]
+  // 初始化左右指针
+  let l = left;
+  let r = right;
+  // 左右指针不越界
+  while (l <= r) {
+    // 左指针所指元素小于基准值，左指针右移
+    while (arr[l] < pivotValue) {
+      l++
+    }
+    while (arr[r] > pivotValue) {
+      r--
+    }
+    // 若左指针不大于右指针，则意味着基准值左边存在较大元素或者右边存在较小
+    // 元素。交换两个元素确保左右两侧有序
+    if (l <= r) {
+      [arr[l], arr[r]] = [arr[r], arr[l]]
+      l++;
+      r--;
+    }
+  }
+  return l
 }
