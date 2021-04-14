@@ -143,3 +143,35 @@ function partintion(arr, left, right) {
   return l
 }
 ```
+```javascript
+var quickSort = function (arr, left = 0, right = arr.length - 1) {
+  if (arr.length <= 1) return arr
+  let pivotValue = arr[Math.floor(left + (right - left) / 2)]
+  let l = left; // 初始化左指针
+  let r = right; // 初始化右指针
+  while (l <= r) {
+    // 左指针元素小于基准值。左指针右移
+    while (arr[l] < pivotValue) {
+      l++;
+    }
+    // 右指针元素大于基准值，右指针左移
+    while (arr[r] > pivotValue) {
+      r--;
+    }
+    if (l <= r) {
+      [arr[l], arr[r]] = [arr[r], arr[l]];
+      l++;
+      r--;
+    }
+  }
+  // 下一次的划分左右子数组的索引
+  let lindIndex = l
+  if (left < lindIndex - 1) {
+    quickSort(arr, left, lindIndex - 1)
+  }
+  if (right > lindIndex) {
+    quickSort(arr, lindIndex, right)
+  }
+  return arr
+}
+```
